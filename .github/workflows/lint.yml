@@ -1,0 +1,69 @@
+name: lint.yml
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint-backend:
+    name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Install backend dependecies
+        working-directory: ./backend
+        run: poetry install
+
+      - name: Run Black
+        working-directory: ./backend
+        run: poetry run black --check .
+
+      - name: Run isort
+        working-directory: ./backend
+        run: poetry run isort --check-only .
+
+      - name: Run Flake8
+        working-directory: ./backend
+        run: poetry run flake8 .
+
+      - name: Run MyPy
+        working-directory: ./backend
+        run: poetry run mypy .
+
+
+  lint-frontend:
+    name: Lint Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Run Prettier
+        working-directory: ./frontend
+        run: npm run format:check
+
+      - name: Run ESLint
+        working-directory: ./frontend
+        run: npm run lint
