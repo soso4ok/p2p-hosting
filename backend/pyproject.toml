@@ -15,6 +15,8 @@ uvicorn = {extras = ["standard"], version = "^0.24.0"}
 sqlalchemy = {extras = ["asyncio"], version = "^2.0.23"}
 alembic = "^1.12.1"         # Migration
 psycopg2-binary = "^2.9.9"  # PostgreSQL driver
+asyncpg = "^0.29.0"
+
 
 # Brokers
 celery = "^5.3.6"
