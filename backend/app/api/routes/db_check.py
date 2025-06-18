@@ -1,7 +1,9 @@
 from fastapi import APIRouter
+
 from app.db.db_connection import test_db_connection
 
 router = APIRouter()
+
 
 @router.get("/health/db")
 async def db_health():

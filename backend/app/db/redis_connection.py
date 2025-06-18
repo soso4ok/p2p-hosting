@@ -1,4 +1,5 @@
 import os
+
 from redis.asyncio import Redis
 
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
@@ -11,6 +12,7 @@ redis = Redis(
     db=REDIS_DB,
     decode_responses=True,
 )
+
 
 async def test_redis_connection():
     await redis.ping()
