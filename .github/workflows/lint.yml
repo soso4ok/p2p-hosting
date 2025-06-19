@@ -39,7 +39,7 @@ jobs:
 
       - name: Run MyPy
         working-directory: ./backend
-        run: poetry run mypy .
+        run: poetry run mypy -p app
 
 
   lint-frontend:

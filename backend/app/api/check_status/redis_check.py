@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.db.redis_connection import redis
+from app.api.check_status.redis_connection import redis
 
 router = APIRouter()
 
