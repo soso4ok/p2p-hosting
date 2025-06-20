@@ -1,5 +1,5 @@
 from .base import Base
-from .user import User, UserSession, UserPreferences, UserRole, UserStatus
+from .user import User, UserPreferences, UserRole, UserSession, UserStatus
 
 __all__ = [
     "Base",

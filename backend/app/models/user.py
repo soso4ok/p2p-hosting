@@ -123,6 +123,10 @@ class UserSession(Base):
         String(255), unique=True, nullable=True, index=True
     )
 
+    is_active: Mapped[bool] = mapped_column(
+        Boolean, default=True, nullable=False, index=True
+    )
+
     # Session metadata
     ip_address: Mapped[Optional[str]] = mapped_column(String(45), nullable=True)
     user_agent: Mapped[Optional[str]] = mapped_column(
