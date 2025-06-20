@@ -1,5 +1,3 @@
-"""Database configuration and async session management."""
-
 import os
 from typing import AsyncGenerator
 
@@ -9,24 +7,19 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-from models import Base
+from app.models import Base
 
-# Reference: https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html
-
-# Database URL from environment
 DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "postgresql+asyncpg://postgres:postgres@localhost:5432/p2p_hosting"
+    "DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5432/p2p_db"
 )
 
-# Create async engine
 engine = create_async_engine(
     DATABASE_URL,
-    echo=True,  # Set to False in production
+    echo=True,
     future=True,
 )
 
-# Create async session factory
+
 AsyncSessionLocal = async_sessionmaker(
     engine,
     class_=AsyncSession,
