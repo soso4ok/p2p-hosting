@@ -12,10 +12,11 @@ from sqlalchemy import Connection, pool
 from sqlalchemy.engine import create_engine
 from sqlalchemy.ext.asyncio import create_async_engine
 
+from app.models import Base
+
 app_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(app_dir))
 
-from app.models import Base
 
 config = context.config
 

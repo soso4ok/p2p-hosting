@@ -7,10 +7,10 @@ import typer
 from alembic import command
 from alembic.config import Config
 
+from app.db.database_connection import create_tables, drop_tables
+
 app_dir = Path(__file__).resolve().parent / "app"
 sys.path.insert(0, str(app_dir))
-
-from app.db.database_connection import create_tables, drop_tables
 
 app = typer.Typer(help="Manage database")
 
