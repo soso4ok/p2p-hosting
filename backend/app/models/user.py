@@ -114,7 +114,7 @@ class UserSession(Base):
         PostgresUUID(as_uuid=True), primary_key=True, default=uuid4, nullable=False
     )
 
-    # Foreing key to user
+    # Foreign key to user
     user_id: Mapped[UUID] = mapped_column(
         PostgresUUID(as_uuid=True),
         ForeignKey("users.id", ondelete="CASCADE"),
