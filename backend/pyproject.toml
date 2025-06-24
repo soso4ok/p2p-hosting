@@ -17,6 +17,8 @@ alembic = "^1.12.1"         # Migration
 psycopg2-binary = "^2.9.9"  # PostgreSQL driver
 asyncpg = "^0.29.0"
 
+# CLI
+typer = "^0.12.0"
 
 # Brokers
 celery = "^5.3.6"
