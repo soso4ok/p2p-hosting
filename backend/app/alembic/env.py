@@ -28,7 +28,9 @@ target_metadata = Base.metadata
 
 
 def get_database_url() -> str:
-    database_url = os.getenv("DATABASE_URL")
+    database_url = os.getenv(
+        "DATABASE_URL", "postgresql+asyncpg://user:password@localhost:5432/p2p_db"
+    )
     if database_url:
         return database_url
 
