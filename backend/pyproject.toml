@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "app"
-version = "0.1.0"
+version = "0.1.1"
 description = "Thesis for university, backend for P2P Hosting platform"
 authors = ["Volodymyy Vorobiov - <volodymyrvorobiov2005@gmail.com>"]
 
@@ -28,6 +28,12 @@ docker = "^6.1.3"
 
 # Monitoring
 psutil = "^5.9.6"
+
+# Authentication & Security
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-multipart = "^0.0.6"
+email-validator = "^2.1.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^25.1.0"

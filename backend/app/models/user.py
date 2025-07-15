@@ -3,6 +3,7 @@ from enum import Enum
 from typing import TYPE_CHECKING, List, Optional
 from uuid import UUID, uuid4
 
+from pydantic import EmailStr
 from sqlalchemy import (
     Boolean,
     DateTime,
@@ -44,7 +45,7 @@ class User(Base):
     )
 
     # Authentication fields
-    email: Mapped[str] = mapped_column(
+    email: Mapped[EmailStr] = mapped_column(
         String(255), unique=True, nullable=False, index=True
     )
 

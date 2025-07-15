@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING, List, Optional
 from uuid import UUID, uuid4
 
 from sqlalchemy import (
-    JSON,
     Boolean,
     CheckConstraint,
     DateTime,
@@ -16,7 +15,7 @@ from sqlalchemy import (
     Text,
     func,
 )
-from sqlalchemy.dialects.postgresql import INET
+from sqlalchemy.dialects.postgresql import INET, JSONB
 from sqlalchemy.dialects.postgresql import UUID as PostgresUUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -91,7 +90,7 @@ class Node(Base):
 
     # Version and configuration
     version: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
-    configuration: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    configuration: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
 
     # Registration and verification
     registration_token: Mapped[str] = mapped_column(
@@ -182,8 +181,10 @@ class NodeCapabilities(Base):
         String(20), default=ResourceStatus.AVAILABLE, nullable=False, index=True
     )
 
-    # Additional capabilities (JSON for flexibility)
-    additional_capabilities: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    # Additional capabilities (JSONB for flexibility)
+    additional_capabilities: Mapped[Optional[dict]] = mapped_column(
+        JSONB, nullable=True
+    )
 
     # Relationships
     node: Mapped["Node"] = relationship("Node", back_populates="capabilities")
@@ -277,8 +278,8 @@ class NodeMetrics(Base):
     # Performance score (calculated metric)
     performance_score: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
 
-    # Additional metrics (JSON for flexibility)
-    additional_metrics: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    # Additional metrics (JSONB for flexibility)
+    additional_metrics: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
 
     # Relationships
     node: Mapped["Node"] = relationship("Node", back_populates="metrics")
@@ -340,7 +341,7 @@ class Application(Base):
         nullable=False,
         default=ApplicationType.CONTAINER,
     )
-    config: Mapped[JSON] = mapped_column(JSON, nullable=True)
+    config: Mapped[JSONB] = mapped_column(JSONB, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
@@ -423,7 +424,7 @@ class Deployment(Base):
     stopped_at: Mapped[Optional[datetime]] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
-    config_override: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    config_override: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
     last_message: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False

@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING, List, Optional
 from uuid import UUID, uuid4
 
 from sqlalchemy import (
-    JSON,
     Boolean,
     CheckConstraint,
     DateTime,
@@ -16,6 +15,7 @@ from sqlalchemy import (
     Text,
     func,
 )
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.dialects.postgresql import UUID as PostgresUUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -104,8 +104,8 @@ class Metric(Base):
     # Metric value and metadata
     value: Mapped[float] = mapped_column(Float, nullable=False)
     string_value: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
-    tags: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
-    labels: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    tags: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
+    labels: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
 
     timestamp: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False, index=True
@@ -304,13 +304,13 @@ class Alert(Base):
         Boolean, default=False, nullable=False
     )
     notification_channels: Mapped[Optional[List[str]]] = mapped_column(
-        JSON, nullable=True
+        JSONB, nullable=True
     )
     escalation_level: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
 
     # Alert metadata
-    tags: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
-    additional_data: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    tags: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
+    additional_data: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
 
     metric: Mapped[Optional["Metric"]] = relationship("Metric", back_populates="alerts")
     rule: Mapped[Optional["AlertRule"]] = relationship(
@@ -355,7 +355,7 @@ class AlertRule(Base):
     target_type: Mapped[MonitoringTarget] = mapped_column(
         String(20), nullable=False, index=True
     )
-    target_filter: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    target_filter: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
 
     # Rule conditions
     metric_name: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
@@ -379,9 +379,9 @@ class AlertRule(Base):
 
     # Notification configuration
     notification_channels: Mapped[Optional[List[str]]] = mapped_column(
-        JSON, nullable=True
+        JSONB, nullable=True
     )
-    escalation_rules: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    escalation_rules: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
 
     # Rule statistics
     total_evaluations: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
@@ -473,17 +473,17 @@ class PerformanceProfile(Base):
 
     # Performance score
     performance_score: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    bottlenecks: Mapped[Optional[List[str]]] = mapped_column(JSON, nullable=True)
-    recommendations: Mapped[Optional[List[str]]] = mapped_column(JSON, nullable=True)
+    bottlenecks: Mapped[Optional[List[str]]] = mapped_column(JSONB, nullable=True)
+    recommendations: Mapped[Optional[List[str]]] = mapped_column(JSONB, nullable=True)
 
     # Detailed analysis
-    detailed_metrics: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    detailed_metrics: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
     analysis_notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
     # Profile metadata
     profile_type: Mapped[str] = mapped_column(String(50), nullable=False)
     automated: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    tags: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    tags: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
 
     __table_args__ = (
         Index("idx_profile_target", "target_type", "target_id"),
@@ -544,9 +544,9 @@ class SystemEvent(Base):
     user_agent: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
     # Event data
-    event_data: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
-    before_state: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
-    after_state: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    event_data: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
+    before_state: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
+    after_state: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
 
     # Event outcome
     success: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
@@ -564,7 +564,7 @@ class SystemEvent(Base):
     category: Mapped[Optional[str]] = mapped_column(
         String(50), nullable=True, index=True
     )
-    tags: Mapped[Optional[List[str]]] = mapped_column(JSON, nullable=True)
+    tags: Mapped[Optional[List[str]]] = mapped_column(JSONB, nullable=True)
 
     user: Mapped[Optional["User"]] = relationship("User")
 

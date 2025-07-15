@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING, List, Optional
 from uuid import UUID, uuid4
 
 from sqlalchemy import (
-    JSON,
     Boolean,
     CheckConstraint,
     DateTime,
@@ -16,6 +15,7 @@ from sqlalchemy import (
     Text,
     func,
 )
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.dialects.postgresql import UUID as PostgresUUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -101,9 +101,9 @@ class Task(Base):
         String(20), default=TaskPriority.NORMAL, nullable=False, index=True
     )
 
-    configuration: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
-    parameters: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
-    environment_variables: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    configuration: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
+    parameters: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
+    environment_variables: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
 
     max_retries: Mapped[int] = mapped_column(Integer, default=3, nullable=False)
     current_retries: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
@@ -124,7 +124,7 @@ class Task(Base):
     )
     last_error: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
-    result: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    result: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
     output_log: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     error_log: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
@@ -287,10 +287,10 @@ class TaskResource(Base):
         Float, nullable=True
     )
 
-    preferred_regions: Mapped[Optional[List[str]]] = mapped_column(JSON, nullable=True)
-    excluded_regions: Mapped[Optional[List[str]]] = mapped_column(JSON, nullable=True)
+    preferred_regions: Mapped[Optional[List[str]]] = mapped_column(JSONB, nullable=True)
+    excluded_regions: Mapped[Optional[List[str]]] = mapped_column(JSONB, nullable=True)
     required_node_capabilities: Mapped[Optional[List[str]]] = mapped_column(
-        JSON, nullable=True
+        JSONB, nullable=True
     )
 
     allocated_node_id: Mapped[Optional[UUID]] = mapped_column(
@@ -312,7 +312,7 @@ class TaskResource(Base):
     special_requirements: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     container_image: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
     environment_requirements: Mapped[Optional[dict]] = mapped_column(
-        JSON, nullable=True
+        JSONB, nullable=True
     )
 
     created_at: Mapped[datetime] = mapped_column(
