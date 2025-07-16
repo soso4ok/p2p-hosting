@@ -127,9 +127,7 @@ class UserSession(Base):
         String(255), unique=True, default=uuid4, nullable=True
     )
 
-    refresh_token: Mapped[Optional[str]] = mapped_column(
-        String(255), unique=True, nullable=True, index=True
-    )
+    refresh_token: Mapped[str] = mapped_column(Text, nullable=False)
 
     is_active: Mapped[bool] = mapped_column(
         Boolean, default=True, nullable=False, index=True
@@ -152,6 +150,8 @@ class UserSession(Base):
     last_activity_at: Mapped[Optional[datetime]] = mapped_column(
         DateTime(timezone=True), nullable=True, onupdate=func.now(), index=True
     )
+
+    user: Mapped["User"] = relationship("User", back_populates="sessions")
 
     __table_args__ = (
         Index("idx_session_user_active", "user_id", "is_active"),

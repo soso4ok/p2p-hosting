@@ -409,6 +409,8 @@ class TaskSchedule(Base):
         nullable=False,
     )
 
+    task: Mapped["Task"] = relationship("Task", back_populates="schedule")
+
     __table_args__ = (
         Index("idx_schedule_next_run", "next_run_at", "is_active"),
         Index("idx_schedule_type", "schedule_type"),
